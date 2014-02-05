@@ -6,6 +6,8 @@ import sys
 import re
 import urllib2
 import argparse
+import pycaption
+from urlparse import urlparse, urljoin
 
 VERSION = "1.0"
 
@@ -116,19 +118,57 @@ class ArdMediathekDownloader(object):
         Returns the filename.
         """
         return self.filename
+        
+    def get_subtitles(self):
+        """
+        download subtitles in srt format
+        """
+        resource = urllib2.urlopen(self.url)
+        link = None
+        for line in resource:
+            """ there are two ways in getting the subtiles one wit re search and the other assuming
+            that the url of subtitles (/static/avportal/untertitel_mediathek/) does not change and using the document_id as the xml filename
+            I'm using the first approach here"""
+            res = re.search(r'mediaCollection\.setSubtitleUrl\(\"(.*)\"', line) # ^\s+
+            try:               
+                link = res.group(1)
+                break
+            except AttributeError:
+                continue
+        self.print_("getting subtitles")
+        try:
+            u = urllib2.urlopen(urljoin('http://'+urlparse(resource.url).hostname, link))
+        except urllib2.HTTPError, (errno):
+            if errno.code == 404:
+                raise RuntimeError("Video does not contain subtitles")
+        ut_file = u.read(u)
+        # subtitles are in Timed Text Authoring Format V1.0 (DFXP http://www.w3.org/2006/10/ttaf1)
+        ut = pycaption.DFXPReader().read(ut_file)
+        # for some reason there is a 10 hour offset on the subtitle timestamp (= 10*60*60*1000000 us)
+        ut.adjust_caption_timing(offset=-10*60*60*1000000)
+       
+        if self.filename is None: # no filename was given - override it with default value
+            self.filename = os.path.join(os.getcwd(), self.default_filename)
+            
+        with open(os.path.splitext(self.filename)[0]+'.srt', 'wb') as f:    
+            f.write(pycaption.SRTWriter().write(ut))
+        self.print_("subtitles saved as %s" % (os.path.splitext(os.path.basename(self.filename))[0]+'.srt'))
 
 def main(argv):
     parser = argparse.ArgumentParser(description='Commandline python script tool to download videos from the online ARD mediathek. Version: %s' % VERSION)
 
     parser.add_argument('url', type=str, help='URL pointing to the mediathek video')
     parser.add_argument('--filename', '-f', type=str, default=None, help='target filename')
+    parser.add_argument('--subtitles', '-ut', action = "store_true", help='download subtitle in srt format')
 
     args = parser.parse_args()
 
     amd = ArdMediathekDownloader(args.url)
     amd.set_filename(args.filename)
-
     amd.download()
+
+    if args.subtitles:
+        amd.get_subtitles()
 
 if __name__ == "__main__":
     main(sys.argv)
