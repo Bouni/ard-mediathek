@@ -1,15 +1,14 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import os
 import sys
 import re
-import urllib2
+import requests
 import argparse
 import pycaption
-from urlparse import urlparse, urljoin
 
-VERSION = "1.0"
+VERSION = "1.1"
 
 class ArdMediathekDownloader(object):
     """
@@ -22,6 +21,7 @@ class ArdMediathekDownloader(object):
         The URL will be checked already here.
         """
         self.url = self.validate_url(url)
+        self.subtitle_url = None
         self.filename = None
         self.default_filename = "video.mp4"
 
@@ -48,48 +48,48 @@ class ArdMediathekDownloader(object):
         """
         if self.filename is None: # no filename was given - override it with default value
             self.filename = os.path.join(os.getcwd(), self.default_filename)
-            self.print_("Since no filename was given the default value '%s' will be used." % os.path.basename(self.filename))
+            print(f"Since no filename was given the default value '{os.path.basename(self.filename)}' will be used.")
 
-        resource = urllib2.urlopen(self.url)
-        link = None
-        for line in resource:
-            res = re.search(r'^\s+mediaCollection\.addMediaStream\(1,\s2,\s"",\s"(.*)",\s"default"\);', line)
-            try:
-                link = res.group(1)
-                break
-            except AttributeError:
-                continue
-        if link is None:
-            raise RuntimeError("The media link could not be found.")
-        self.print_("Found media link url: %s" % link)
+        # get documentId from HTML
+        doc_id = re.search(r'documentId=(\d+)', self.url)
 
-        u = urllib2.urlopen(link)
-        with open(self.filename, 'wb') as f:
-            meta = u.info() 
-            filesize = int(meta.getheaders("Content-Length")[0]) 
-            self.print_("Downloading video. Download size: %s MB" % (filesize/1024**2))
-            self.print_("Downloading destination: %s" % self.filename)
+        if doc_id is None:
+            raise RuntimeError("The document id could not be found.")
 
-            filesize_downloaded = 0
-            blocksize = 8192
+        # request json file from Mediathek
+        r  = requests.get(f"http://www.ardmediathek.de/play/media/{doc_id.group(1)}?devicetype=pc&features")
+      
+        if not 'application/json' in r.headers.get('content-type'):
+            raise RuntimeError("The server didn't reply with JSON which indicates that an error occured.")
 
-            while True:
-                buffer = u.read(blocksize)
-                if not buffer:
-                    break
-                filesize_downloaded += len(buffer)
-                f.write(buffer)
-                status = r"%10d  [%3.2f%%]" % (filesize_downloaded, filesize_downloaded * 100. / filesize)
-                status = status + chr(8)*(len(status)+1)
-                print status,
+        json = r.json()
 
-        self.print_("Download finished.%s" % (chr(32)*20))
+        # get subtitle URL from JSON
+        if '_subtitleUrl' in json:
+            self.subtitle_url = json['_subtitleUrl']
 
-    def print_(self, message):
-        """
-        Simple print method that appends a suffix in front of each printed line.
-        """
-        print "[%s] %s" % (os.path.basename(__file__), str(message))
+
+        # if video is available in the desired quality, get that url, else get the best available
+        if len(json['_mediaArray'][0]['_mediaStreamArray']) >= self.quality + 1:
+            video = json['_mediaArray'][0]['_mediaStreamArray'][self.quality]['_stream']
+        else:
+            video = json['_mediaArray'][0]['_mediaStreamArray'][-1]['_stream']
+
+        if not video.startswith('http:'):
+            video = "http:" + video
+
+        # request and store video
+        r = requests.get(video, stream=True)
+
+        with open(self.filename, 'wb') as fd:
+            filesize = int(r.headers['content-length'])/1024**2
+            done = 0
+            print(f"Downloading video. Download size: {filesize:.2f}MB")
+            print(f"Downloading destination:{self.filename}")
+            for chunk in r.iter_content(chunk_size=128):
+                done = done + 128/1024**2 
+                print(f"Downloaded {done:.2f}MB of {filesize:.2f}MB", end="\r")
+                fd.write(chunk)
 
     def set_filename(self, filename):
         """
@@ -101,70 +101,61 @@ class ArdMediathekDownloader(object):
         if filename is None:
             return None
         if not os.path.isdir(os.path.dirname(filename)):
-            self.print_("Destination path '%s' does not exist. Try to create it ..." % os.path.dirname(filename))
+            print(f"Destination path '{os.path.dirname(filename)}' does not exist. Try to create it ...")
             try:
                 os.makedirs(os.path.dirname(filename))
             except:
                 raise RuntimeError("The destination path could not be built. Aborting.")
-            self.print_("Destination path was successfully created.")
+            print("Destination path was successfully created.")
 
         self.filename = filename
         return self.filename
-
-    def get_filename(self, filename):
+       
+    def set_quality(self, quality):
         """
-        Getter method for the filename. 
-
-        Returns the filename.
+        Set the desired video quality
         """
-        return self.filename
-        
+        self.quality = quality
+
     def get_subtitles(self):
+    
         """
         download subtitles in srt format
         """
-        resource = urllib2.urlopen(self.url)
-        link = None
-        for line in resource:
-            """ there are two ways in getting the subtiles one wit re search and the other assuming
-            that the url of subtitles (/static/avportal/untertitel_mediathek/) does not change and using the document_id as the xml filename
-            I'm using the first approach here"""
-            res = re.search(r'mediaCollection\.setSubtitleUrl\(\"(.*)\"', line) # ^\s+
-            try:               
-                link = res.group(1)
-                break
-            except AttributeError:
-                continue
-        self.print_("getting subtitles")
-        try:
-            u = urllib2.urlopen(urljoin('http://'+urlparse(resource.url).hostname, link))
-        except urllib2.HTTPError, (errno):
-            if errno.code == 404:
-                raise RuntimeError("Video does not contain subtitles")
-        ut_file = u.read(u)
+        
+        if not self.subtitle_url:
+            raise RuntimeError("Video does not contain subtitles")
+        
+        ut_file = requests.get(self.subtitle_url).text
+        with open(os.path.splitext(self.filename)[0]+'.srt','w') as f:
+            f.write(ut_file)
+        print(f"subtitles saved as {(os.path.splitext(os.path.basename(self.filename))[0]+'.srt')}")
+
         # subtitles are in Timed Text Authoring Format V1.0 (DFXP http://www.w3.org/2006/10/ttaf1)
-        ut = pycaption.DFXPReader().read(ut_file)
+        # ut = pycaption.DFXPReader().read(ut_file)
         # for some reason there is a 10 hour offset on the subtitle timestamp (= 10*60*60*1000000 us)
-        ut.adjust_caption_timing(offset=-10*60*60*1000000)
+        # ut.adjust_caption_timing(offset=-10*60*60*1000000)
        
-        if self.filename is None: # no filename was given - override it with default value
-            self.filename = os.path.join(os.getcwd(), self.default_filename)
-            
-        with open(os.path.splitext(self.filename)[0]+'.srt', 'wb') as f:    
-            f.write(pycaption.SRTWriter().write(ut))
-        self.print_("subtitles saved as %s" % (os.path.splitext(os.path.basename(self.filename))[0]+'.srt'))
+        #if self.filename is None: # no filename was given - override it with default value
+        #    self.filename = os.path.join(os.getcwd(), self.default_filename)
+        #    
+        #with open(os.path.splitext(self.filename)[0]+'.srt', 'wb') as f:    
+        #    f.write(pycaption.SRTWriter().write(ut))
+        #print(f"subtitles saved as {(os.path.splitext(os.path.basename(self.filename))[0]+'.srt')}")
 
 def main(argv):
     parser = argparse.ArgumentParser(description='Commandline python script tool to download videos from the online ARD mediathek. Version: %s' % VERSION)
 
     parser.add_argument('url', type=str, help='URL pointing to the mediathek video')
     parser.add_argument('--filename', '-f', type=str, default=None, help='target filename')
+    parser.add_argument('--quality', '-q', type=int, help='set the desired video quality', default=3, choices=[1,2,3])
     parser.add_argument('--subtitles', '-ut', action = "store_true", help='download subtitle in srt format')
 
     args = parser.parse_args()
 
     amd = ArdMediathekDownloader(args.url)
     amd.set_filename(args.filename)
+    amd.set_quality(args.quality)
     amd.download()
 
     if args.subtitles:
