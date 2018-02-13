@@ -75,7 +75,7 @@ class ArdMediathekDownloader(object):
         else:
             video = json['_mediaArray'][0]['_mediaStreamArray'][-1]['_stream']
 
-        if not video.startswith('http:'):
+        if not video.startswith('http:') and not video.startswith('https:'):
             video = "http:" + video
 
         # request and store video
