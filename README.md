@@ -8,6 +8,9 @@ There is no official way for downloading the videos.
 
 Therefore [bouni](https://github.com/Bouni) has written ard-mediathek.py, a simple commandline python script for downloading the videos. It was extended by [dotcs](https://github.com/dotcs).
 
+## Requirements
+ - Python (Version \ge 3.6)
+
 ## Usage
 
     ./ard-mediathek.py url --filename FILENAME
