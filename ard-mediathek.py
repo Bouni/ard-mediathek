@@ -7,6 +7,7 @@ import re
 import requests
 import argparse
 import pycaption
+import contextlib
 
 from progress.bar import IncrementalBar
 
@@ -162,10 +163,12 @@ def main(argv):
     amd = ArdMediathekDownloader(args.url)
     amd.set_filename(args.filename)
     amd.set_quality(args.quality)
-    amd.download()
+    with contextlib.suppress(KeyboardInterrupt):
+        amd.download()
+        if args.subtitles:
+            amd.get_subtitles()
 
-    if args.subtitles:
-        amd.get_subtitles()
+
 
 if __name__ == "__main__":
     main(sys.argv)
