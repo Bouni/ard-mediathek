@@ -71,18 +71,10 @@ class ArdMediathekDownloader(object):
         if '_subtitleUrl' in json:
             self.subtitle_url = json['_subtitleUrl']
 
+        video_url = self._get_video_url(json)
 
-        # if video is available in the desired quality, get that url, else get the best available
-        if len(json['_mediaArray'][0]['_mediaStreamArray']) >= self.quality + 1:
-            video = json['_mediaArray'][0]['_mediaStreamArray'][self.quality]['_stream']
-        else:
-            video = json['_mediaArray'][0]['_mediaStreamArray'][-1]['_stream']
-
-        if not video.startswith('http:') and not video.startswith('https:'):
-            video = "http:" + video
-
-        # request and store video
-        r = requests.get(video, stream=True)
+        # request and store video_url
+        r = requests.get(video_url, stream=True)
 
         chunk_size = 4096
         with open(self.filename, 'wb') as fd:
@@ -97,6 +89,17 @@ class ArdMediathekDownloader(object):
                 bar.goto(done)
                 fd.write(chunk)
             bar.finish()
+
+    def _get_video_url(self, json):
+        # if video is available in the desired quality, get that url, else get the best available
+        media = json['_mediaArray']
+        if len(media[0]['_mediaStreamArray']) >= self.quality + 1:
+            video = media[0]['_mediaStreamArray'][self.quality]['_stream']
+        else:
+            video = media[0]['_mediaStreamArray'][-1]['_stream']
+        if not video.startswith('http:') and not video.startswith('https:'):
+            video = "http:" + video
+        return video
 
     def set_filename(self, filename):
         """
