@@ -7,6 +7,9 @@ import re
 import requests
 import argparse
 import pycaption
+import contextlib
+
+from progress.bar import IncrementalBar
 
 VERSION = "1.1"
 
@@ -81,15 +84,19 @@ class ArdMediathekDownloader(object):
         # request and store video
         r = requests.get(video, stream=True)
 
+        chunk_size = 4096
         with open(self.filename, 'wb') as fd:
             filesize = int(r.headers['content-length'])/1024**2
             done = 0
             print(f"Downloading video. Download size: {filesize:.2f}MB")
             print(f"Downloading destination:{self.filename}")
-            for chunk in r.iter_content(chunk_size=128):
-                done = done + 128/1024**2 
-                print(f"Downloaded {done:.2f}MB of {filesize:.2f}MB", end="\r")
+            bar = IncrementalBar('Downloading', suffix='%(percent).2f%% %(index).2fMB/%(max).2fMB', max=filesize)
+
+            for chunk in r.iter_content(chunk_size=chunk_size):
+                done = done + chunk_size/1024**2
+                bar.goto(done)
                 fd.write(chunk)
+            bar.finish()
 
     def set_filename(self, filename):
         """
@@ -149,10 +156,12 @@ def main(argv):
     amd = ArdMediathekDownloader(args.url)
     amd.set_filename(args.filename)
     amd.set_quality(args.quality)
-    amd.download()
+    with contextlib.suppress(KeyboardInterrupt):
+        amd.download()
+        if args.subtitles:
+            amd.get_subtitles()
 
-    if args.subtitles:
-        amd.get_subtitles()
+
 
 if __name__ == "__main__":
     main(sys.argv)
