@@ -94,7 +94,7 @@ class ArdMediathekDownloader(object):
     def _get_video_by_quality(self, media):
         medias = self._get_all_stream_urls_grouped_by_quality(media)
         if self.quality in medias:
-            url = next(iter(medias[self.quality]))
+            url = medias[self.quality][0]
             if not url.startswith('http:') and not url.startswith('https:'):
                 url = "http:" + url
 
@@ -103,7 +103,7 @@ class ArdMediathekDownloader(object):
             raise RuntimeError(f"Cannot find a video for quality. Available Qualities are:{medias.keys()}")
 
     def _get_all_stream_urls_grouped_by_quality(self, medias):
-        res = defaultdict(set)
+        res = defaultdict(list)
         for medium in medias:
             streams = medium['_mediaStreamArray']
             for stream in streams:
@@ -112,12 +112,12 @@ class ArdMediathekDownloader(object):
                     continue
                 quality = stream['_quality']
                 if type(stream_url_or_list_of_urls) == str:
-                    res[quality].add(stream_url_or_list_of_urls)
+                    res[quality].append(stream_url_or_list_of_urls)
                 else:
                     for stream_url in stream_url_or_list_of_urls:
                         if "," in stream_url:
                             continue
-                        res[quality].add(stream_url)
+                        res[quality].append(stream_url)
         return res
 
     def set_filename(self, filename):
