@@ -103,19 +103,12 @@ class ArdMediathekDownloader(object):
         Checks and sets the filename where the filename consists of the path *and* the filename.
         If the path does not exist yet, this method will try to build it.
 
-        Returns the filename or None. If building the path does not work, this method will raise a RuntimeError.
+        Returns the filename or None.
         """
-        if filename is None:
+        if not filename:
             return None
-        if not os.path.isdir(os.path.dirname(filename)):
-            print(f"Destination path '{os.path.dirname(filename)}' does not exist. Try to create it ...")
-            try:
-                os.makedirs(os.path.dirname(filename))
-            except:
-                raise RuntimeError("The destination path could not be built. Aborting.")
-            print("Destination path was successfully created.")
-
-        self.filename = filename
+        
+        self.filename = os.path.abspath(os.path.expanduser(filename))
         return self.filename
        
     def set_quality(self, quality):
