@@ -72,11 +72,13 @@ class ArdMediathekDownloader(object):
             print(f"Downloading destination:{self.filename}")
             bar = IncrementalBar('Downloading', suffix='%(percent).2f%% %(index).2fMB/%(max).2fMB', max=filesize)
 
-            for chunk in r.iter_content(chunk_size=chunk_size):
-                done = done + chunk_size /1024**2
-                bar.goto(done)
-                fd.write(chunk)
-            bar.finish()
+            try:
+                for chunk in r.iter_content(chunk_size=chunk_size):
+                    done = done + chunk_size /1024**2
+                    bar.goto(done)
+                    fd.write(chunk)
+            finally:
+                bar.finish()
 
     def _get_media_json_by_document_id(self, doc_id):
         # request json file from Mediathek
