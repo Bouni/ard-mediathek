@@ -8,6 +8,7 @@ import requests
 import argparse
 import pycaption
 import contextlib
+from collections import defaultdict
 
 from progress.bar import IncrementalBar
 
@@ -54,18 +55,13 @@ class ArdMediathekDownloader(object):
             print(f"Since no filename was given the default value '{os.path.basename(self.filename)}' will be used.")
 
         # get documentId from HTML
-        doc_id = re.search(r'documentId=(\d+)', self.url)
+        doc_id_result = re.search(r'documentId=(\d+)', self.url)
 
-        if doc_id is None:
+        if doc_id_result is None:
             raise RuntimeError("The document id could not be found.")
+        doc_id = doc_id_result.group(1)
 
-        # request json file from Mediathek
-        r  = requests.get(f"http://www.ardmediathek.de/play/media/{doc_id.group(1)}?devicetype=pc&features")
-      
-        if not 'application/json' in r.headers.get('content-type'):
-            raise RuntimeError("The server didn't reply with JSON which indicates that an error occured.")
-
-        json = r.json()
+        json = self._get_media_json_by_document_id(doc_id)
 
         # get subtitle URL from JSON
         if '_subtitleUrl' in json:
@@ -90,16 +86,47 @@ class ArdMediathekDownloader(object):
                 fd.write(chunk)
             bar.finish()
 
+    def _get_media_json_by_document_id(self, doc_id):
+        # request json file from Mediathek
+        r = requests.get(f"http://www.ardmediathek.de/play/media/{doc_id}?devicetype=pc&features")
+        if not 'application/json' in r.headers.get('content-type'):
+            raise RuntimeError("The server didn't reply with JSON which indicates that an error occured.")
+        json = r.json()
+        return json
+
     def _get_video_url(self, json):
         # if video is available in the desired quality, get that url, else get the best available
         media = json['_mediaArray']
-        if len(media[0]['_mediaStreamArray']) >= self.quality + 1:
-            video = media[0]['_mediaStreamArray'][self.quality]['_stream']
+        return self._get_video_by_quality(media)
+
+    def _get_video_by_quality(self, media):
+        medias = self._get_all_stream_urls_grouped_by_quality(media)
+        if self.quality in medias:
+            url = next(iter(medias[self.quality]))
+            if not url.startswith('http:') and not url.startswith('https:'):
+                url = "http:" + url
+
+            return url
         else:
-            video = media[0]['_mediaStreamArray'][-1]['_stream']
-        if not video.startswith('http:') and not video.startswith('https:'):
-            video = "http:" + video
-        return video
+            raise RuntimeError(f"Cannot find a video for quality. Available Qualities are:{medias.keys()}")
+
+    def _get_all_stream_urls_grouped_by_quality(self, medias):
+        res = defaultdict(set)
+        for medium in medias:
+            streams = medium['_mediaStreamArray']
+            for stream in streams:
+                stream_url_or_list_of_urls = stream['_stream']
+                if "," in stream_url_or_list_of_urls:
+                    continue
+                quality = stream['_quality']
+                if type(stream_url_or_list_of_urls) == str:
+                    res[quality].add(stream_url_or_list_of_urls)
+                else:
+                    for stream_url in stream_url_or_list_of_urls:
+                        if "," in stream_url:
+                            continue
+                        res[quality].add(stream_url)
+        return res
 
     def set_filename(self, filename):
         """
