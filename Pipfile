@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 requests = "*"
 pycaption = "*"
-progress = "*"
+tqdm = "*"
 
 [dev-packages]
 

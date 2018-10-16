@@ -3,7 +3,7 @@ import re
 from collections import defaultdict
 
 import requests
-from progress.bar import IncrementalBar
+from tqdm import tqdm
 
 
 class ArdMediathekDownloader(object):
@@ -66,19 +66,12 @@ class ArdMediathekDownloader(object):
 
         chunk_size = 4096
         with open(self.filename, 'wb') as fd:
-            filesize = int(r.headers['content-length'] ) / 1024**2
-            done = 0
-            print(f"Downloading video. Download size: {filesize:.2f}MB")
+            filesize = int(r.headers['content-length'] )
             print(f"Downloading destination:{self.filename}")
-            bar = IncrementalBar('Downloading', suffix='%(percent).2f%% %(index).2fMB/%(max).2fMB', max=filesize)
-
-            try:
+            with tqdm(total=filesize, desc="Downloading", unit="byte", unit_scale=True, unit_divisor=1024) as bar:
                 for chunk in r.iter_content(chunk_size=chunk_size):
-                    done = done + chunk_size /1024**2
-                    bar.goto(done)
+                    bar.update(chunk_size)
                     fd.write(chunk)
-            finally:
-                bar.finish()
 
     def _get_media_json_by_document_id(self, doc_id):
         # request json file from Mediathek
