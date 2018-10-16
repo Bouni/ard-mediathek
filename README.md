@@ -20,6 +20,7 @@ pipenv install
  - Copy the URL from your browser, for example (http://mediathek.daserste.de/sendungen_a-z/799280_reportage-dokumentation/15880804_unser-wirtschaftswunder-die-wahre-geschichte)
  - Run the script as shown above
  - You can optionally pass a target filename as second parameter (otherwise `video.mp4` is used as the default filename)
+ - if you set the parameter `--derivefilename`, the script will set the filename to the title of the URL which contains the video
  - Wait for the download to complete :-)
 
 You can get also a quick overview by calling
