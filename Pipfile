@@ -7,6 +7,8 @@ name = "pypi"
 requests = "*"
 pycaption = "*"
 tqdm = "*"
+requests-html = "*"
+python-slugify = "*"
 
 [dev-packages]
 

@@ -18,12 +18,14 @@ def main(argv):
     parser.add_argument('--filename', '-f', type=str, default=None, help='target filename')
     parser.add_argument('--quality', '-q', type=int, help='set the desired video quality', default=3, choices=[1,2,3])
     parser.add_argument('--subtitles', '-ut', action = "store_true", help='download subtitle in srt format')
+    parser.add_argument('--derivefilename', '-dft', action="store_true", default=False, help='Get the video title from the video')
 
     args = parser.parse_args()
 
     amd = ArdMediathekDownloader(args.url)
     amd.set_filename(args.filename)
     amd.set_quality(args.quality)
+    amd.set_derive_filename(args.derivefilename)
     with contextlib.suppress(KeyboardInterrupt):
         amd.download()
         if args.subtitles:

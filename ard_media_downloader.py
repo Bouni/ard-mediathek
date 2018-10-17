@@ -3,7 +3,9 @@ import re
 from collections import defaultdict
 
 import requests
+from requests_html import HTMLSession
 from tqdm import tqdm
+from slugify import slugify
 
 
 class ArdMediathekDownloader(object):
@@ -20,6 +22,7 @@ class ArdMediathekDownloader(object):
         self.subtitle_url = None
         self.filename = None
         self.default_filename = "video.mp4"
+        self.derive_filename = False
 
     def validate_url(self, url):
         """
@@ -43,7 +46,11 @@ class ArdMediathekDownloader(object):
         Downloads the video into its destination path.
         """
         if self.filename is None: # no filename was given - override it with default value
-            self.filename = os.path.join(os.getcwd(), self.default_filename)
+            fn = self.default_filename
+            if self.derive_filename:
+                fn = self._get_filename_from_url(self.url)
+
+            self.filename = os.path.join(os.getcwd(), fn)
             print(f"Since no filename was given the default value '{os.path.basename(self.filename)}' will be used.")
 
         # get documentId from HTML
@@ -134,6 +141,14 @@ class ArdMediathekDownloader(object):
         """
         self.quality = quality
 
+    def set_derive_filename(self, derive_filename):
+        """
+        Should the filename be derived from the content of the ARD mediathek web page?
+        :param derive_filename:
+        :return:
+        """
+        self.derive_filename = derive_filename
+
     def get_subtitles(self):
 
         """
@@ -159,3 +174,9 @@ class ArdMediathekDownloader(object):
         # with open(os.path.splitext(self.filename)[0]+'.srt', 'wb') as f:
         #    f.write(pycaption.SRTWriter().write(ut))
         # print(f"subtitles saved as {(os.path.splitext(os.path.basename(self.filename))[0]+'.srt')}")
+
+    def _get_filename_from_url(self, url):
+        html_session = HTMLSession()
+        response = html_session.get(self.url)
+        title = response.html.find('title', first=True).text
+        return slugify(title.partition("|")[0].strip()) + ".mp4"
