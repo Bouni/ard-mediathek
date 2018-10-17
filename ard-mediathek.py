@@ -23,9 +23,9 @@ def main(argv):
     args = parser.parse_args()
 
     amd = ArdMediathekDownloader(args.url)
-    amd.set_filename(args.filename)
-    amd.set_quality(args.quality)
-    amd.set_derive_filename(args.derivefilename)
+    amd.filename = args.filename
+    amd.quality = args.quality
+    amd.derive_filename = args.derivefilename
     with contextlib.suppress(KeyboardInterrupt):
         amd.download()
         if args.subtitles:
