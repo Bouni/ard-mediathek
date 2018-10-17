@@ -23,6 +23,7 @@ class ArdMediathekDownloader(object):
         self.filename = None
         self.default_filename = "video.mp4"
         self.derive_filename = False
+        self.quality = 3
 
     def validate_url(self, url):
         """
