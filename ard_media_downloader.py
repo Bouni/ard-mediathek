@@ -20,10 +20,10 @@ class ArdMediathekDownloader(object):
         """
         self.url = self.validate_url(url)
         self.subtitle_url = None
-        self.filename = None
+        self._filename = None
         self.default_filename = "video.mp4"
-        self.derive_filename = False
-        self.quality = 3
+        self._derive_filename = False
+        self._quality = 3
 
     def validate_url(self, url):
         """
@@ -123,7 +123,12 @@ class ArdMediathekDownloader(object):
                         res[quality].append(stream_url)
         return res
 
-    def set_filename(self, filename):
+    @property
+    def filename(self):
+        return self._filename
+
+    @filename.setter
+    def filename(self, filename):
         """
         Checks and sets the filename where the filename consists of the path *and* the filename.
         If the path does not exist yet, this method will try to build it.
@@ -133,22 +138,32 @@ class ArdMediathekDownloader(object):
         if not filename:
             return None
 
-        self.filename = os.path.abspath(os.path.expanduser(filename))
-        return self.filename
+        self._filename = os.path.abspath(os.path.expanduser(filename))
+        return self._filename
 
-    def set_quality(self, quality):
+    @property
+    def quality(self):
+        return self._quality
+
+    @quality.setter
+    def quality(self, quality):
         """
         Set the desired video quality
         """
-        self.quality = quality
+        self._quality = quality
 
-    def set_derive_filename(self, derive_filename):
+    @property
+    def derive_filename(self):
+        return self._derive_filename
+
+    @derive_filename.setter
+    def derive_filename(self, derive_filename):
         """
         Should the filename be derived from the content of the ARD mediathek web page?
         :param derive_filename:
         :return:
         """
-        self.derive_filename = derive_filename
+        self._derive_filename = derive_filename
 
     def get_subtitles(self):
 

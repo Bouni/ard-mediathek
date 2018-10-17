@@ -1,9 +1,11 @@
-import pytest
-import ard_media_downloader
 import json
 
+import pytest
+
+import ard_media_downloader
 
 _URL = "https://www.ardmediathek.de/tv/NaturNah/Der-%C3%96-Kuh-Hof/NDR-Fernsehen/Video?bcastId=14049240&documentId=48330046"
+
 
 @pytest.mark.parametrize("url,expected", [
     (_URL, False),
@@ -18,9 +20,11 @@ def test_validate_url(url, expected):
     else:
         ard_media_downloader.ArdMediathekDownloader(url)
 
+
 @pytest.fixture(scope="session")
 def downloader():
     yield ard_media_downloader.ArdMediathekDownloader(_URL)
+
 
 @pytest.fixture(scope="session")
 def media_json():
@@ -34,6 +38,6 @@ def media_json():
     (3, "https://pdvideosdaserste-a.akamaihd.net/int/2018/10/01/d5d97d8f-15e1-40cf-94f3-bf113577a01a/960-1.mp4"),
 ])
 def test_read_streams(downloader, media_json, quality, expected_url):
-    downloader.set_quality(quality)
+    downloader.quality = quality
     url = downloader._get_video_url(media_json)
     assert url == expected_url
