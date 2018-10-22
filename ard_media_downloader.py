@@ -1,11 +1,10 @@
 import os
 import re
-from collections import defaultdict
 
 import requests
 from requests_html import HTMLSession
-from tqdm import tqdm
 from slugify import slugify
+from tqdm import tqdm
 
 
 class ArdMediathekDownloader(object):
@@ -97,31 +96,49 @@ class ArdMediathekDownloader(object):
     def _get_video_by_quality(self, media):
         medias = self._get_all_stream_urls_grouped_by_quality(media)
         if self.quality in medias:
-            url = medias[self.quality][0]
-            if not url.startswith('http:') and not url.startswith('https:'):
-                url = "http:" + url
+            url = medias[self.quality]
+            url = self.fix_url(url)
 
             return url
         else:
             raise RuntimeError(f"Cannot find a video for quality. Available Qualities are:{medias.keys()}")
 
     def _get_all_stream_urls_grouped_by_quality(self, medias):
-        res = defaultdict(list)
+        videos_by_size = {}
         for medium in medias:
             streams = medium['_mediaStreamArray']
             for stream in streams:
                 stream_url_or_list_of_urls = stream['_stream']
                 if "," in stream_url_or_list_of_urls:
                     continue
-                quality = stream['_quality']
+
                 if type(stream_url_or_list_of_urls) == str:
-                    res[quality].append(stream_url_or_list_of_urls)
+                    s = self.get_size_of_video(stream_url_or_list_of_urls)
+                    videos_by_size[s] = stream_url_or_list_of_urls
                 else:
                     for stream_url in stream_url_or_list_of_urls:
                         if "," in stream_url:
                             continue
-                        res[quality].append(stream_url)
-        return res
+                        s = self.get_size_of_video(stream_url)
+                        videos_by_size[s] = stream_url
+
+        keys = sorted(k for k in videos_by_size.keys() if k > 0)
+        result = {1: videos_by_size.get(keys[0]),
+                  2: videos_by_size.get(keys[len(keys) // 2]),
+                  3: videos_by_size.get(keys[-1])}
+
+        return result
+
+    def get_size_of_video(self, url):
+        url = self.fix_url(url)
+        r = requests.head(url)
+        h = r.headers
+        return int(h.get("Content-Length"))
+
+    def fix_url(self, url):
+        if not url.startswith('http:') and not url.startswith('https:'):
+            url = "http:" + url
+        return url
 
     @property
     def filename(self):
