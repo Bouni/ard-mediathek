@@ -123,6 +123,10 @@ class ArdMediathekDownloader(object):
                         videos_by_size[s] = stream_url
 
         keys = sorted(k for k in videos_by_size.keys() if k > 0)
+
+        if len(keys) > 3:
+            keys = keys[-3:]
+
         result = {1: videos_by_size.get(keys[0]),
                   2: videos_by_size.get(keys[len(keys) // 2]),
                   3: videos_by_size.get(keys[-1])}
