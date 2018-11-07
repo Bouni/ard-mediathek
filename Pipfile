@@ -12,6 +12,7 @@ python-slugify = "*"
 
 [dev-packages]
 pytest = "*"
+pytest-vcr = "*"
 
 [requires]
 python_version = "3.7"

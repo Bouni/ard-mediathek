@@ -1,0 +1,191 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.20.0]
+    method: GET
+    uri: http://www.ardmediathek.de/play/media/57001826?devicetype=pc&features
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAL1UTYvbMBD9Lz7b1ocdJw6U0kMPhZZSSk9LWMbROBaRnVSSnS5L/ntH2g3rbQOF
+        QvYySE8zmvdGo3lM7v3DEZN1MmmFhyRN7rX7rCdCWjAOaa+whdH4byMY7R+S9V0CoydPmZZpkYqU
+        b8jpaHHSePrUwy5c1nl/dGvGdL/LwaoelQbf4T5XyJyHQRHIOGeLZbBixQrJpJCikMuSr5ioftWs
+        rvj7PrgO/h25B2pubLz2Bn9YM0tyOp3+TvLsyWQl6kU9D/7atg59suaExZgP1kLQ9UgyzLjTQ7IW
+        l7Pv3iL0M4+flzI8V4HuRTuhJSBstoqik9aA64yLp/GCGVsFFOA8joPOpi6HPfSgO5UP6JlmRF1y
+        qofgjAvWNG3ZrOptVsNym5VtUWSgcJFJFFIVlWrLUrG0XPFMpAshyRYyrIWMEFWQbFUGm/fHMt+6
+        XhvWA6W3eV+Mq+SczjXx63KeOF5Vc1Sxb9xFVQavFf2Hnigh0P2DnJjlv7slgVjJSCC9ZZr4bDHN
+        5rVQ+VZCY2fcXmhsw2tCi3+120kr39HLUzvTrkO96+jjLiV/o1Z8+kdPvbg5hzkHhr7OAJ4m5Jf5
+        7Ahn7mC9RnuBRMDUaMn5QLJkVS8DMNmPAzQG1cuE3eGhMYftPmDejnj+DXVfo2aWBQAA
+    headers:
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['507']
+      Content-Type: [application/json;charset=UTF-8]
+      Date: ['Wed, 07 Nov 2018 20:42:40 GMT']
+      Server: [Apache]
+      Set-Cookie: [lbpersistence=rd10o00000000000000000000ffffac1d2428o8082; path=/;
+          Httponly]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.20.0]
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/de/2018/10/01/bbf4b89c-9a7c-4f33-ade5-2e12d36df44d/320-1.mp4
+  response:
+    body: {string: ''}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Credentials: ['false']
+      Access-Control-Allow-Headers: ['*']
+      Access-Control-Allow-Methods: ['GET, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Connection: [keep-alive]
+      Content-Length: ['64681183']
+      Content-Type: [video/mp4]
+      Date: ['Wed, 07 Nov 2018 20:42:40 GMT']
+      ETag: ['"a971bf632003ed5b1d29d1ad131dd27c:1538403907.285498"']
+      Last-Modified: ['Mon, 01 Oct 2018 14:22:15 GMT']
+      Server: [AkamaiNetStorage]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.20.0]
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/de/2018/10/01/bbf4b89c-9a7c-4f33-ade5-2e12d36df44d/512-1.mp4
+  response:
+    body: {string: ''}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Credentials: ['false']
+      Access-Control-Allow-Headers: ['*']
+      Access-Control-Allow-Methods: ['GET, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Connection: [keep-alive]
+      Content-Length: ['205498820']
+      Content-Type: [video/mp4]
+      Date: ['Wed, 07 Nov 2018 20:42:41 GMT']
+      ETag: ['"8ad757b5a417163f7fd633d8b3c562c4:1538403902.620128"']
+      Last-Modified: ['Mon, 01 Oct 2018 14:19:29 GMT']
+      Server: [AkamaiNetStorage]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.20.0]
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/de/2018/10/01/bbf4b89c-9a7c-4f33-ade5-2e12d36df44d/480-1.mp4
+  response:
+    body: {string: ''}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Credentials: ['false']
+      Access-Control-Allow-Headers: ['*']
+      Access-Control-Allow-Methods: ['GET, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Connection: [keep-alive]
+      Content-Length: ['108211157']
+      Content-Type: [video/mp4]
+      Date: ['Wed, 07 Nov 2018 20:42:41 GMT']
+      ETag: ['"2c15cb9b79d7f924d9dbcc6f78e93a88:1538403897.176749"']
+      Last-Modified: ['Mon, 01 Oct 2018 14:16:28 GMT']
+      Server: [AkamaiNetStorage]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.20.0]
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/de/2018/10/01/bbf4b89c-9a7c-4f33-ade5-2e12d36df44d/640-1.mp4
+  response:
+    body: {string: ''}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Credentials: ['false']
+      Access-Control-Allow-Headers: ['*']
+      Access-Control-Allow-Methods: ['GET, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Connection: [keep-alive]
+      Content-Length: ['410923499']
+      Content-Type: [video/mp4]
+      Date: ['Wed, 07 Nov 2018 20:42:41 GMT']
+      ETag: ['"014b1fd620df9e91262dca5b2bf484ae:1538403963.990746"']
+      Last-Modified: ['Mon, 01 Oct 2018 14:23:35 GMT']
+      Server: [AkamaiNetStorage]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.20.0]
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/de/2018/10/01/bbf4b89c-9a7c-4f33-ade5-2e12d36df44d/960-1.mp4
+  response:
+    body: {string: ''}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Credentials: ['false']
+      Access-Control-Allow-Headers: ['*']
+      Access-Control-Allow-Methods: ['GET, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Connection: [keep-alive]
+      Content-Length: ['673185988']
+      Content-Type: [video/mp4]
+      Date: ['Wed, 07 Nov 2018 20:42:41 GMT']
+      ETag: ['"eaf46f6d4d32a0a5c1dbc3750ecd3624:1538403948.268484"']
+      Last-Modified: ['Mon, 01 Oct 2018 14:23:07 GMT']
+      Server: [AkamaiNetStorage]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.20.0]
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/de/2018/10/01/bbf4b89c-9a7c-4f33-ade5-2e12d36df44d/1280-1.mp4
+  response:
+    body: {string: ''}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Credentials: ['false']
+      Access-Control-Allow-Headers: ['*']
+      Access-Control-Allow-Methods: ['GET, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Connection: [keep-alive]
+      Content-Length: ['1275986965']
+      Content-Type: [video/mp4]
+      Date: ['Wed, 07 Nov 2018 20:42:41 GMT']
+      ETag: ['"9b0083cf100fb4c5ede8bfb01bd77b66:1538403921.791474"']
+      Last-Modified: ['Mon, 01 Oct 2018 14:22:07 GMT']
+      Server: [AkamaiNetStorage]
+    status: {code: 200, message: OK}
+version: 1
