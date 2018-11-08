@@ -45,7 +45,14 @@ class ArdMediathekDownloader(object):
         """
         Downloads the video into its destination path.
         """
-        if self.filename is None: # no filename was given - override it with default value
+        self._determine_filename()
+
+        video_url = self.get_video_url()
+
+        self.download_by_video_url(video_url)
+
+    def _determine_filename(self):
+        if self.filename is None:  # no filename was given - override it with default value
             fn = self.default_filename
             if self.derive_filename:
                 fn = self._get_filename_from_url(self.url)
@@ -53,32 +60,30 @@ class ArdMediathekDownloader(object):
             self.filename = os.path.join(os.getcwd(), fn)
             print(f"Since no filename was given the default value '{os.path.basename(self.filename)}' will be used.")
 
-        # get documentId from HTML
-        doc_id_result = re.search(r'documentId=(\d+)', self.url)
-
-        if doc_id_result is None:
-            raise RuntimeError("The document id could not be found.")
-        doc_id = doc_id_result.group(1)
-
-        json = self._get_media_json_by_document_id(doc_id)
-
-        # get subtitle URL from JSON
-        if '_subtitleUrl' in json:
-            self.subtitle_url = json['_subtitleUrl']
-
-        video_url = self._get_video_url(json)
-
+    def download_by_video_url(self, video_url):
         # request and store video_url
         r = requests.get(video_url, stream=True)
-
         chunk_size = 4096
         with open(self.filename, 'wb') as fd:
-            filesize = int(r.headers['content-length'] )
+            filesize = int(r.headers['content-length'])
             print(f"Downloading destination:{self.filename}")
             with tqdm(total=filesize, desc="Downloading", unit="byte", unit_scale=True, unit_divisor=1024) as bar:
                 for chunk in r.iter_content(chunk_size=chunk_size):
                     bar.update(chunk_size)
                     fd.write(chunk)
+
+    def get_video_url(self):
+        # get documentId from HTML
+        doc_id_result = re.search(r'documentId=(\d+)', self.url)
+        if doc_id_result is None:
+            raise RuntimeError("The document id could not be found.")
+        doc_id = doc_id_result.group(1)
+        json = self._get_media_json_by_document_id(doc_id)
+        # get subtitle URL from JSON
+        if '_subtitleUrl' in json:
+            self.subtitle_url = json['_subtitleUrl']
+        video_url = self._get_video_url(json)
+        return video_url
 
     def _get_media_json_by_document_id(self, doc_id):
         # request json file from Mediathek
