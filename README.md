@@ -14,7 +14,7 @@ pipenv install
 ```
 ## Usage
 
-    pipenv run python ard-mediathek.py <url> [--filename FILENAME]
+    pipenv run python ard-mediathek.py "<url>" [--filename FILENAME]
 
  - Go to the ARD mediathek and open the page with the video you want to download.
  - Copy the URL from your browser, for example (http://mediathek.daserste.de/sendungen_a-z/799280_reportage-dokumentation/15880804_unser-wirtschaftswunder-die-wahre-geschichte)
