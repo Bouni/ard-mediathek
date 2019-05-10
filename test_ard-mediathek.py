@@ -4,7 +4,7 @@ import pytest
 
 import ard_media_downloader
 
-_URL = "https://www.ardmediathek.de/tv/Babylon-Berlin/Folge-10/Das-Erste/Video?bcastId=54319834&documentId=57001826"
+_URL = "http://mediathek.daserste.de/Tatort/Der-gute-Weg/Video?bcastId=602916&documentId=62505210"
 
 
 @pytest.mark.parametrize("url,expected", [
@@ -45,14 +45,14 @@ def test_read_streams(downloader, media_json, quality, expected_url):
     assert url == expected_url
 
 
-_URL_PREFIX = "https://pdvideosdaserste-a.akamaihd.net/de/2018/10/01/bbf4b89c-9a7c-4f33-ade5-2e12d36df44d/"
+_URL_PREFIX = "https://pdvideosdaserste-a.akamaihd.net/int/2019/04/26/b15e7061-dec0-43f7-9d20-f676886103b2/"
 
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize("quality, expected_url", [
-    (1, _URL_PREFIX + "640-1.mp4"),
-    (2, _URL_PREFIX + "960-1.mp4"),
-    (3, _URL_PREFIX + "1280-1.mp4"),
+    (1, _URL_PREFIX + "640-1_396790.mp4"),
+    (2, _URL_PREFIX + "960-1_396790.mp4"),
+    (3, _URL_PREFIX + "1280-1_396790.mp4"),
 ])
 def test_quality_yields_correct_url(downloader, quality, expected_url):
     downloader.quality = quality
@@ -64,11 +64,11 @@ def test_filename_default(downloader):
     downloader._determine_filename()
     assert downloader.filename.endswith("video.mp4")
 
-
+@pytest.mark.vcr
 def test_filename_derived(downloader):
     downloader.derive_filename = True
     downloader._determine_filename()
-    assert downloader.filename.endswith("folge-10.mp4")
+    assert downloader.filename.endswith("der-gute-weg.mp4")
 
 def test_filename_given(downloader):
     downloader.filename = "babylon-berlin.mp4"
