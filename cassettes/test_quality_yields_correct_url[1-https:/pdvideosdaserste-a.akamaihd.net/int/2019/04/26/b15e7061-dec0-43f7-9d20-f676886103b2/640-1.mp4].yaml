@@ -1,0 +1,378 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.21.0
+    method: GET
+    uri: http://www.ardmediathek.de/play/media/62505210?devicetype=pc&features
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'false'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Fri, 10 May 2019 19:21:45 GMT
+      Location:
+      - http://classic.ardmediathek.de/play/media/62505210?devicetype=pc&features
+      Server:
+      - AkamaiGHost
+      Set-Cookie:
+      - population=67; expires=Mon, 31-Dec-2038 23:59:59 GMT; path=/
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.21.0
+    method: GET
+    uri: http://classic.ardmediathek.de/play/media/62505210?devicetype=pc&features
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAL2UTYvbMBCG/4vPtvXlz0ApPfRQaCml9LSEoERjW8R2Ukl2uiz57x25m412u1Ao
+        bI7zauR5n/FoHqKNuz9CtIpmreAQxdFG2896RqWRvQWMFTRy6t23Sfba3Ueru0hODjN5nMUiZjFd
+        Y9LRwKzh9GmQrf9Y59zRrgjRQ5tKowZQWroO9qkCYp0cFYqEUlJwklOSc5JRwhlngpcZrQgrftWk
+        Luj7waeO7h2me2t22jrtevhh+qDI6XT6u8hjJhGUCybCy1+bxoKLVhS15c4HY6TnekCMfmr1GK3Y
+        5ey7MyCHIOPnpQ2PXcDvLimBHyUtGOtgGnUyd6ncy0HqTqUjOKKJHh3hlNWEZoQXZMtyKGnBEgU7
+        mmSiKZNacZo0RVlUVcGo2HISC1TYRtRFWdO4yIIAu3QNsioIcsavAePhUTocs3RnB92TQaJTkw5i
+        qqJzHAL6/iDIDAbZPOhOjR57wXkV/KiWIbKXBiTyBfx/oIfk3vYLkyzwcfemRsJ2LkbiNy0X/sql
+        3Po5OL8ZeDhuNwAPB/o1cPGvsTxp5TqcDJx4jDrQbYevveT0ViP77K39mdn12S9J2eNTG6XD9fol
+        XDz+zB6M02AuEvOamgwmHxAvF7Tywmw+jnLbg7qu5xYO2/6w2z9p59+m34GB1AUAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'false'
+      - 'false'
+      Access-Control-Allow-Headers:
+      - '*'
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '505'
+      Content-Type:
+      - application/json;charset=UTF-8
+      Date:
+      - Fri, 10 May 2019 19:21:45 GMT
+      Server:
+      - Apache
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.21.0
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/int/2019/04/26/b15e7061-dec0-43f7-9d20-f676886103b2/320-1_396790.mp4
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'false'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '121014803'
+      Content-Type:
+      - video/mp4
+      Date:
+      - Fri, 10 May 2019 19:21:45 GMT
+      ETag:
+      - '"74fd927e05e00e4b4163fbffd75a9b82:1556282364.310168"'
+      Last-Modified:
+      - Fri, 26 Apr 2019 11:45:57 GMT
+      Server:
+      - AkamaiNetStorage
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.21.0
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/int/2019/04/26/b15e7061-dec0-43f7-9d20-f676886103b2/512-1_396790.mp4
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'false'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '402954326'
+      Content-Type:
+      - video/mp4
+      Date:
+      - Fri, 10 May 2019 19:21:45 GMT
+      ETag:
+      - '"d3dac3cc50b460cddf952ff18dc6c08c:1556282425.04103"'
+      Last-Modified:
+      - Fri, 26 Apr 2019 12:30:23 GMT
+      Server:
+      - AkamaiNetStorage
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.21.0
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/int/2019/04/26/b15e7061-dec0-43f7-9d20-f676886103b2/480-1_396790.mp4
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'false'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '211740034'
+      Content-Type:
+      - video/mp4
+      Date:
+      - Fri, 10 May 2019 19:21:45 GMT
+      ETag:
+      - '"2857cb9cc5cca35147d76562ad60fdff:1556282416.234492"'
+      Last-Modified:
+      - Fri, 26 Apr 2019 12:23:56 GMT
+      Server:
+      - AkamaiNetStorage
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.21.0
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/int/2019/04/26/b15e7061-dec0-43f7-9d20-f676886103b2/640-1_396790.mp4
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'false'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '806557967'
+      Content-Type:
+      - video/mp4
+      Date:
+      - Fri, 10 May 2019 19:21:46 GMT
+      ETag:
+      - '"d08034a390b24dcdb662fea403a43eaa:1556282374.512291"'
+      Last-Modified:
+      - Fri, 26 Apr 2019 11:52:08 GMT
+      Server:
+      - AkamaiNetStorage
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.21.0
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/int/2019/04/26/b15e7061-dec0-43f7-9d20-f676886103b2/960-1_396790.mp4
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'false'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1318418680'
+      Content-Type:
+      - video/mp4
+      Date:
+      - Fri, 10 May 2019 19:21:46 GMT
+      ETag:
+      - '"342aca382c11439114c011b2768da965:1556282397.180023"'
+      Last-Modified:
+      - Fri, 26 Apr 2019 11:53:46 GMT
+      Server:
+      - AkamaiNetStorage
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.21.0
+    method: HEAD
+    uri: https://pdvideosdaserste-a.akamaihd.net/int/2019/04/26/b15e7061-dec0-43f7-9d20-f676886103b2/1280-1_396790.mp4
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'false'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, HEAD, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2505424237'
+      Content-Type:
+      - video/mp4
+      Date:
+      - Fri, 10 May 2019 19:21:46 GMT
+      ETag:
+      - '"cbe933908ffbbce18446b2d6b26337ed:1556282457.913461"'
+      Last-Modified:
+      - Fri, 26 Apr 2019 12:38:03 GMT
+      Server:
+      - AkamaiNetStorage
+    status:
+      code: 200
+      message: OK
+version: 1
