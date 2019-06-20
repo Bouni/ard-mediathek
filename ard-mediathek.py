@@ -22,6 +22,11 @@ def main(argv):
 
     args = parser.parse_args()
 
+    if "documentId" not in args.url:
+        print("ERROR: The URL does not contain a documentId. Start searching your video from "
+            "http://mediathek.daserste.de/ to get an URL with documentId.")
+        return
+
     amd = ArdMediathekDownloader(args.url)
     amd.filename = args.filename
     amd.quality = args.quality
