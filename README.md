@@ -1,6 +1,10 @@
 ard-mediathek
 ===============
 
+
+# Deprecated! This does no longer work!
+
+
 The German public TV station "ARD" has a nice mediathek (video on demand) where they offer all their movies/documentations and so on.
 Sadly they delete or at least take them offline after 7 days.
 
